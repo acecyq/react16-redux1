@@ -1,0 +1,72 @@
+npm i redux react-redux
+
+
+
+create src/store folder.
+create Reducer.js file or Reducer folder in store folder.
+
+
+
+Reducer.js
+const startState = {
+    persons: []
+};
+
+export default (state = startState, action) => {
+    return state;
+}
+
+
+
+index.js
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import Reducer from './store/Reducer';
+...
+const store = createStore(Reducer);
+const app = <Provider store={store} >
+                <App />
+            </Provider>
+
+ReactDOM.render(app, document.getElementById('root'));
+registerServiceWorker();
+
+OR...
+with combineReducers...
+
+index.js
+import { createStore, combineReducers } from 'redux';
+// import Reducer from './store/Reducer';
+import Results from './store/reducers/Results';
+import Counter from './store/reducers/Counter';
+import { Provider } from 'react-redux';
+...
+const rootReducer = combineReducers({
+    res: Results,
+    ctr: Counter
+});
+const store = createStore(rootReducer);
+const app = <Provider store={store}><App /></Provider>;
+
+ReactDOM.render(app, document.getElementById('root'));
+registerServiceWorker();
+
+
+
+container/Persons.js
+import { connect } from 'react-redux';
+...
+const mapStateToProps = state => {
+    return {
+        persons: state.persons
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        addPerson: () => dispatch({ type: 'ADD' }),
+        delPerson: () => dispatch({ type: 'DEL' })
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Persons);
